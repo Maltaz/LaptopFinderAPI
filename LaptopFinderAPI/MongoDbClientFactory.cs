@@ -1,14 +1,14 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
 
 namespace LaptopFinderAPI
 {
-    public class MongoDbClientFactory
+    public class MongoDbClientFactory : IMongoClientFactory
     {
-        private readonly MongoClient _mongoClient;
+        public readonly MongoClient _mongoClient;
 
-        public MongoDbClientFactory()
+        public MongoDbClientFactory(string connectionString)
         {
-            var connectionString = "mongodb://localhost:27017/mydb";
             var mongoClientSettings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
             _mongoClient = new MongoClient(mongoClientSettings);
         }
@@ -17,5 +17,10 @@ namespace LaptopFinderAPI
         {
             return _mongoClient;
         }
+    }
+    //wyjebać gdzieś indziej
+    public interface IMongoClientFactory
+    {
+        IMongoClient GetMongoClient();
     }
 }

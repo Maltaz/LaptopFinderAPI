@@ -1,6 +1,15 @@
 using LaptopFinderAPI;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Read configuration from json
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+builder.Services.AddSingleton<IConfiguration>(configuration);
 
 // Add services to the container.
 
@@ -8,7 +17,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<MongoDbClientFactory>();
+builder.Services.AddSingleton<IMongoClientFactory>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var connectionString = config.GetConnectionString("MongoDB");
+    return new MongoDbClientFactory(connectionString);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
