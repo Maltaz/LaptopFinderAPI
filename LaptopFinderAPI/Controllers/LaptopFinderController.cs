@@ -30,5 +30,17 @@ namespace LaptopFinderAPI.Controllers
             var results = await _mongo.FindAsync(filter, options);
             return Ok(await results.ToListAsync());
         }
+
+        [HttpPost("predict")]
+        public async Task<LaptopDto> GetLaptop([FromBody] CaseDataDto caseData, [FromQuery] IEnumerable<int> ignoredCases)
+        {
+            throw new Exception();
+        }
+
+        [HttpPost("teach/{laptopId}")]
+        public async Task<LaptopDto> TeachAlgorithm([FromBody] CaseDataDto caseData,int laptopId)
+        {
+            throw new Exception();
+        }
     }
 }
