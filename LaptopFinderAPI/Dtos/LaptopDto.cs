@@ -1,10 +1,8 @@
-﻿using MongoDB.Driver;
-using System.Runtime.Intrinsics.Arm;
-
-namespace LaptopFinderAPI.Dtos
+﻿namespace LaptopFinderAPI.Dtos
 {
     public class LaptopDto
     {
+        public int Id { get; set; }
         public string Company { get; set; }
         public string Product { get; set; }
         public string TypeName { get; set; }
