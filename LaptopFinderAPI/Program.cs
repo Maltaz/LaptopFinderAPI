@@ -1,5 +1,4 @@
 using LaptopFinderAPI;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +15,7 @@ builder.Services.AddSingleton<IConfiguration>(configuration);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(sg => sg.EnableAnnotations());
 builder.Services.AddSingleton<IMongoClientFactory>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
