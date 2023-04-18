@@ -2,12 +2,12 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["LaptopFinderAPI/LaptopFinderAPI.csproj", "LaptopFinderAPI/"]
+COPY ["LaptopFinder.Core/LaptopFinder.Core.csproj", "LaptopFinder.Core/"]
 RUN dotnet restore "LaptopFinderAPI/LaptopFinderAPI.csproj"
 COPY . .
 WORKDIR "/src/LaptopFinderAPI"

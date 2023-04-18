@@ -10,25 +10,25 @@ namespace LaptopFinderAPI.Controllers
     [ApiController]
     public class LaptopFinderController : ControllerBase
     {
-        //private readonly MongoDbClientFactory _mongoDbClientFactory;
-        //private readonly IMongoCollection<BsonDocument> _mongo;
-        //public LaptopFinderController(MongoDbClientFactory mongoDbClientFactory)
-        //{
-        //    _mongoDbClientFactory = mongoDbClientFactory;
-        //    var mongoClient = mongoDbClientFactory.GetMongoClient();
-        //    var database = mongoClient.GetDatabase("TEST");
-        //    _mongo = database.GetCollection<BsonDocument>("testCollection");
-        //}
+        private readonly IMongoClientFactory _mongoDbClientFactory;
+        private readonly IMongoCollection<BsonDocument> _mongo;
+        public LaptopFinderController(IMongoClientFactory mongoDbClientFactory)
+        {
+            _mongoDbClientFactory = mongoDbClientFactory;
+            var mongoClient = mongoDbClientFactory.GetMongoClient();
+            var database = mongoClient.GetDatabase("TEST");
+            _mongo = database.GetCollection<BsonDocument>("testCollection");
+        }
 
-        //// POST api/<LaptopFinderController>
-        //[HttpPost]
-        //public async Task<ActionResult<IEnumerable<BsonDocument>>> PostSomething(ProductDto value)
-        //{
-        //    var filter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId("1"));
-        //    var options = new FindOptions<BsonDocument>();
-        //    var results = await _mongo.FindAsync(filter, options);
-        //    return Ok(await results.ToListAsync());
-        //}
+        // POST api/<LaptopFinderController>
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<string>>> PostSomething(ProductDto value)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId("1"));
+            var options = new FindOptions<BsonDocument>();
+            var results = await _mongo.FindAsync(filter, options);
+            return Ok(await results.ToListAsync());
+        }
 
         [HttpPost("predict")]
         [SwaggerResponse(400, "Returned when some value is not provided. (MOCKED. Returned if you send 0 in ignored cases)")]
