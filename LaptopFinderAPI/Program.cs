@@ -1,21 +1,14 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using LaptopFinder.Core.Repositories;
+using LaptopFinder.Core.Services;
 using LaptopFinderAPI;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IMongoClientFactory>(sp =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    var connectionString = config.GetConnectionString("MongoDB");
-    return new MongoDbClientFactory(connectionString!);
-});
-
-// Add services to the container.
-
 builder.Services.AddControllers();
-
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(sg => sg.EnableAnnotations());
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
@@ -26,10 +19,23 @@ builder.Services.AddCors(options =>
         );
 });
 
+builder.Services.AddScoped<ICBRService, CBRService>();
+builder.Services.AddScoped<ICaseRepository, CaseRepository>();
+builder.Services.AddScoped<ILaptopRepository, LaptopRepository>();
+builder.Services.AddSingleton<IMongoClientFactory>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var connectionString = config.GetConnectionString("MongoDB");
+    return new MongoDbClientFactory(connectionString!);
+});
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
 
