@@ -73,6 +73,10 @@ namespace LaptopFinderAPI.Controllers
                 return BadRequest();
             }
 
+            var @case = mapper.Map<Case>(caseData);
+
+            await sender.Send(new TeachAlgorithmCommand(laptopId, @case));
+
             return Ok();
         }
     }

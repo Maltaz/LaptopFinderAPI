@@ -5,10 +5,17 @@ namespace LaptopFinder.Core.Repositories
     public interface ICaseRepository
     {
         Task<IEnumerable<Case>> GetAll();
+        Task Add(Case @case);
     }
 
     public class CaseRepository : ICaseRepository
     {
+        //TODO
+        public Task Add(Case @case)
+        {
+            return Task.CompletedTask;
+        }
+
         //TODO
         public async Task<IEnumerable<Case>> GetAll()
         {
