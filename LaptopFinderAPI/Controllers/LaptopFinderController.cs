@@ -22,8 +22,8 @@ namespace LaptopFinderAPI.Controllers
         {
             _mongoDbClientFactory = mongoDbClientFactory;
             var mongoClient = mongoDbClientFactory.GetMongoClient();
-            var database = mongoClient.GetDatabase("TEST");
-            _mongo = database.GetCollection<BsonDocument>("testCollection");
+            var database = mongoClient.GetDatabase("laptop_finder");
+            _mongo = database.GetCollection<BsonDocument>("laptopData");
             
             this.sender = sender;
             this.mapper = mapper;
