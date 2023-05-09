@@ -2,7 +2,7 @@
 {
     public class Case
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int LaptopId { get; set; }
         public int GraphicsQuality { get; set; }
         public int AudioQuality { get; set; }
