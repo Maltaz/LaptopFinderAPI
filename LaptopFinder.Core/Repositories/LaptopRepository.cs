@@ -1,4 +1,5 @@
 ﻿using LaptopFinder.Core.Entities;
+using MongoDB.Driver;
 
 namespace LaptopFinder.Core.Repositories
 {
@@ -9,27 +10,20 @@ namespace LaptopFinder.Core.Repositories
 
     public class LaptopRepository : ILaptopRepository
     {
-        //TODO
+        private readonly IMongoCollection<Laptop> _laptopCollection;
+
+        public LaptopRepository(IMongoClient mongoClient)
+        {
+            var database = mongoClient.GetDatabase("laptop_finder");
+            _laptopCollection = database.GetCollection<Laptop>("laptopData");
+        }
+
         public async Task<Laptop> GetLaptopData(int laptopId)
         {
-            var laptop = new Laptop()
-            {
-                Id = 0,
-                Ram = "12GB",
-                Company = "Acer",
-                CPU = "Intel Core i5 7200U 2.5GHz",
-                ScreenResolution = "Full HD 1920x1080",
-                GPU = "Nvidia GeForce GTX 950M",
-                TypeName = "Notebook",
-                Inches = "15.6",
-                Memory = "128GB SSD +  1TB HDD",
-                OpSys = "Windows 10",
-                Price = "1369.90",
-                Product = "Aspire F5-573G-510L",
-                Weight = "2.6kg"
-            };
+            var filter = Builders<Laptop>.Filter.Eq(x => x.Id, laptopId);
+            var laptop = await _laptopCollection.FindAsync(filter);
 
-            return laptop;
+            return await laptop.FirstAsync();
         }
     }
 }

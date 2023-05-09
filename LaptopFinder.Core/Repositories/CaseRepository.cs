@@ -1,4 +1,6 @@
 ﻿using LaptopFinder.Core.Entities;
+using MongoDB.Driver;
+using MongoDB.Driver.Core.Operations;
 
 namespace LaptopFinder.Core.Repositories
 {
@@ -10,30 +12,21 @@ namespace LaptopFinder.Core.Repositories
 
     public class CaseRepository : ICaseRepository
     {
-        //TODO
+        private readonly IMongoCollection<Case> _caseCollection;
+
+        public CaseRepository(IMongoClient mongoClient)
+        {
+            var database = mongoClient.GetDatabase("laptop_finder");
+            _caseCollection = database.GetCollection<Case>("caseData");
+        }
         public Task Add(Case @case)
         {
-            return Task.CompletedTask;
+            return _caseCollection.InsertOneAsync(@case);
         }
 
-        //TODO
         public async Task<IEnumerable<Case>> GetAll()
         {
-            var @case = new Case()
-            {
-                Id = 2137,
-                LaptopId = 0,
-                AudioQuality = 5,
-                BatteryTime = 5,
-                Small = 5,
-                DiskSize = 5,
-                Efficiency = 5,
-                GraphicsQuality = 5,
-                KeyboardLight = 4,
-                Light = 5
-            };
-
-            return new List<Case> { @case };
+            return await _caseCollection.AsQueryable().ToListAsync();
         }
     }
 }
