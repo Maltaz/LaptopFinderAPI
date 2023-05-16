@@ -13,7 +13,9 @@ builder.Services.AddSwaggerGen(sg => sg.EnableAnnotations());
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
-        builder => builder.WithOrigins("http://localhost:3000")
+        builder => 
+        builder.WithOrigins("http://localhost:3000")
+        .AllowAnyHeader()
         );
 });
 
