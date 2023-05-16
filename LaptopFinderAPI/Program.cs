@@ -16,6 +16,7 @@ builder.Services.AddCors(options =>
         builder => 
         builder.WithOrigins("http://localhost:3000")
         .AllowAnyHeader()
+        .AllowCredentials()
         );
 });
 
@@ -59,7 +60,6 @@ app.UseSwaggerUI();
 
 app.UseCors("AllowAllOrigins");
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
