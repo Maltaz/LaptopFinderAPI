@@ -1,4 +1,5 @@
 ﻿using LaptopFinder.Core.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Operations;
 
@@ -21,6 +22,8 @@ namespace LaptopFinder.Core.Repositories
         }
         public Task Add(Case @case)
         {
+            @case.Id = BsonBinaryData.Create(Guid.NewGuid());
+
             return _caseCollection.InsertOneAsync(@case);
         }
 

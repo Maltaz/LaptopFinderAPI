@@ -1,8 +1,11 @@
-﻿namespace LaptopFinder.Core.Entities
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace LaptopFinder.Core.Entities
 {
     public class Case
     {
-        public Guid Id { get; set; }
+        public BsonBinaryData Id { get; set; }
         public int LaptopId { get; set; }
         public int GraphicsQuality { get; set; }
         public int AudioQuality { get; set; }
